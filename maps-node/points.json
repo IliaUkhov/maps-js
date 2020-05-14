@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Odessa city",
+    "coords": [46.485722, 30.743444],
+    "destination": true
+  },
+  {
+    "name": "Fontanka village",
+    "coords": [46.566873, 30.862122],
+    "destination": true
+  },
+  {
+    "name": "",
+    "coords": [46.561503, 30.834571],
+    "destination": false
+  },
+  {
+    "name": "",
+    "coords": [46.566283, 30.797149],
+    "destination": false
+  },
+  {
+    "name": "",
+    "coords": [46.561503, 30.834571],
+    "destination": false
+  },
+  {
+    "name": "",
+    "coords": [46.550053, 30.753976],
+    "destination": false
+  },
+  {
+    "name": "",
+    "coords": [46.512203, 30.721703],
+    "destination": false
+  }
+]
