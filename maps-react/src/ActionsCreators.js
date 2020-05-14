@@ -1,9 +1,9 @@
-const setUser = function (user) {
+const setAuthenticated = function (authenticated) {
   return {
     type: "SET", state: {
-      user: user
+      isAuthenticated: authenticated
     }
   }
 };
 
-module.exports = { setUser };
+module.exports = { setAuthenticated };

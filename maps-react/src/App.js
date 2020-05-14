@@ -5,6 +5,7 @@ import SignUp from "./SignUp";
 import MapView from "./MapView";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import store from "./Store";
+import PrivateRoute from './PrivateRoute';
 
 const Provider = require("react-redux").Provider;
 
@@ -15,9 +16,9 @@ class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Redirect exact path="/" to="/signin"/>
-            <Route exact path='/map' component={MapView}/>
-            <Route exact path='/signin' component={SignIn}/>
-            <Route exact path='/signup' component={SignUp}/>
+            <PrivateRoute exact path="/map" component={MapView}/>
+            <Route exact path="/signin" component={SignIn}/>}/>
+            <Route exact path="/signup" component={SignUp}/>
           </Switch>
         </BrowserRouter>
       </Provider>

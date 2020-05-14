@@ -5,6 +5,9 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+import { connect } from "react-redux";
 
 const styles = theme => ({
   paper: {
@@ -30,13 +33,11 @@ class SignIn extends React.Component {
 
   constructor(props) {
     super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleEmailChange = this.handleEmailChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.handleSignUp = this.handleSignUp.bind(this)
     this.state = {
       email: null,
-      password: null
+      password: null,
+      isAuthenticated: null,
+      invalidCreds: false
     }
   }
 
@@ -51,9 +52,11 @@ class SignIn extends React.Component {
       })
     }).then(res => {
       if (res.status === 200) {
+        this.setState({ invalidCreds: false })
+        this.props.setAuthenticated(true)
         this.props.history.push("/map")
       } else if (res.status === 401) {
-        console.log("Invalid credentials")
+        this.setState({ invalidCreds: true })
       }
     })
   }
@@ -70,6 +73,11 @@ class SignIn extends React.Component {
     this.props.history.push("/signup")
   }
 
+
+  handleAlertClose() {
+    this.setState({ invalidCreds: false })
+  }
+
   render() {
     const { classes } = this.props
     return (
@@ -82,7 +90,7 @@ class SignIn extends React.Component {
           <form
             className={classes.form}
             noValidate
-            onSubmit={this.handleSubmit}
+            onSubmit={this.handleSubmit.bind(this)}
           >
             <TextField
               variant="outlined"
@@ -93,7 +101,7 @@ class SignIn extends React.Component {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={this.handleEmailChange}
+              onChange={this.handleEmailChange.bind(this)}
             />
             <TextField
               variant="outlined"
@@ -104,7 +112,7 @@ class SignIn extends React.Component {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={this.handlePasswordChange}
+              onChange={this.handlePasswordChange.bind(this)}
             />
             <Button
               type="submit"
@@ -119,11 +127,16 @@ class SignIn extends React.Component {
               type="submit"
               fullWidth
               variant="outlined"
-              color="secondary"
-              onClick={this.handleSignUp}
+              onClick={this.handleSignUp.bind(this)}
             >
               Don't have an account? Sign Up
             </Button>
+            <Snackbar open={this.state.invalidCreds} autoHideDuration={3000}
+              onClose={this.handleAlertClose.bind(this)}>
+              <MuiAlert elevation={6} variant="filled" severity="error">
+                Invalid login or password
+              </MuiAlert>
+            </Snackbar>
           </form>
         </div>
       </Container>
@@ -131,4 +144,12 @@ class SignIn extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SignIn)
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.isAuthenticated
+  }
+}
+const actions = require("./ActionsCreators");
+
+SignIn = withStyles(styles, { withTheme: true })(SignIn)
+export default connect(mapStateToProps, actions)(SignIn)
