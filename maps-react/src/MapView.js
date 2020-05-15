@@ -76,14 +76,14 @@ class MapView extends React.Component {
       .then(json => {
         this.setState({
           points: json
-        }, this.render)
+        })
       });
       fetch('http://localhost:8000/api/paths')
       .then(res => res.json())
       .then(json => {
         this.setState({
           paths: json
-        }, this.render)
+        })
       });
   }
 
@@ -131,7 +131,7 @@ class MapView extends React.Component {
         }
       })
     } else {
-      const pathId = this.state.paths.findIndex(path => payload in path.points)
+      const pathId = this.state.paths.findIndex(path => path.points.includes(payload))
       if (pathId >= 0) {
         fetch('http://localhost:8000/api/pathinfo/' + pathId)
           .then(res => res.json())
@@ -322,7 +322,7 @@ class MapView extends React.Component {
     let pathWindow;
     if (this.state.pathWindow.opened) {
       const pathWindowPoint = this.state.points[this.state.pathWindow.point]
-      const path = this.state.paths.find(path => this.state.pathWindow.point in path.points)
+      const path = this.state.paths.find(path => path.points.includes(this.state.pathWindow.point))
       const timeMinutesTotal = Math.round(this.state.pathWindow.info.time * 60)
       const timeMinutes = timeMinutesTotal % 60
       const timeHours = Math.floor(timeMinutes / 60)
